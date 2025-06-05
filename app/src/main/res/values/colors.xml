@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="soft_green">#98FB98</color> <!-- Pale Green -->
+    <color name="mint_Cream">#F5FFFA</color> <!-- Pale Green -->
+    <color name="honeydew">#F0FFF0</color> <!-- Pale Green -->
+    <color name="light_green">#90EE90</color> <!-- Pale Green -->
+    <color name="pale_green">#98FB98</color> <!-- Pale Green -->
+    <color name="tea_green">#D0F0C0</color> <!-- Pale Green -->
+    <color name="celadon">#ACE1AF</color> <!-- Pale Green -->
+    <color name="pastel_green">#77DD77</color> <!-- Pale Green -->
+
+
+<!--    이름	색상 코드	비고-->
+<!--    Mint Cream	#F5FFFA	거의 흰색에 가까운 민트톤-->
+<!--    Honeydew	#F0FFF0	매우 연한 그린-->
+<!--    Light Green	#90EE90	일반적인 연한 녹색-->
+<!--    Pale Green	#98FB98	Light Green보다 살짝 더 옅음-->
+<!--    Tea Green	#D0F0C0	파스텔 톤 연초록색-->
+<!--    Celadon	#ACE1AF	부드럽고 차분한 녹색 계열-->
+<!--    Pastel Green	#77DD77	채도 낮은 파스텔톤 녹색-->
+</resources>
