@@ -32,11 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setAdapter(new ScreenSlidePagerAdapter(this));  //스와이프
 
-//        // 기본 프래그먼트 설정
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.fragment_container, new MainFragment())
-//                .commit();
-
         bottomNavigationView.setOnItemSelectedListener(item -> {
 //            Fragment selectedFragment;
 
@@ -48,21 +43,6 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.nav_profile) {
                 viewPager.setCurrentItem(2); // ProfileFragment
             }
-//            if (itemId == R.id.nav_store) {
-////                selectedFragment = new StoreFragment();
-//                viewPager.setCurrentItem(0);
-//            } else if (itemId == R.id.nav_profile) {
-////                selectedFragment = new ProfileFragment();
-//                viewPager.setCurrentItem(1);
-//            } else {
-////                selectedFragment = new MainFragment();
-//                viewPager.setCurrentItem(2);
-//
-//            }
-//
-//            getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.fragment_container, selectedFragment)
-//                    .commit();
             return true;
         });
 
