@@ -43,4 +43,6 @@ dependencies {
         exclude group: "com.android.support"
     }
     implementation ("com.jakewharton.threetenabp:threetenabp:1.4.6")
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+
 }

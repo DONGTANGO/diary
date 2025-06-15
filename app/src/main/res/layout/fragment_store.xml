@@ -1,11 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:text="상점 화면입니다"
-        android:textSize="24sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    android:layout_height="match_parent"
+    android:paddingBottom="80dp"
+    android:fitsSystemWindows="true">
 
+    <!-- 캐릭터 상점 (화면 절반) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="캐릭터 상점"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <!-- 캐릭터 이미지 -->
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/character1"
+                    android:id="@+id/character1"
+                    android:layout_marginEnd="16dp"
+                    />
+
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/character2"
+                    android:id="@+id/character2"
+                    android:layout_marginEnd="16dp"
+                    />
+
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/character3"
+                    android:id="@+id/character3"
+                    android:layout_marginEnd="16dp"
+                    />
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+
+    <!-- 배경 상점 (화면 절반) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="배경 상점"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <!-- 배경 이미지 -->
+                <ImageView
+                    android:layout_width="250dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/letter1"
+                    android:id="@+id/background1"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="centerCrop"/>
+
+                <ImageView
+                    android:layout_width="250dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/letter2"
+                    android:id="@+id/background2"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="centerCrop"/>
+
+                <ImageView
+                    android:layout_width="250dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/letter3"
+                    android:id="@+id/background3"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="centerCrop"/>
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
 </LinearLayout>

@@ -28,9 +28,34 @@
         app:mcv_weekDayTextAppearance="@style/CalenderViewWeekCustomText"
         app:mcv_showOtherDates="out_of_range"
         />
-<!--        app:mcv_showOtherDates="all"-->
-<!--        app:mcv_selectionColor="#00F"-->
+
+        <LinearLayout
+            android:id="@+id/image_text_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/calendarView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:id="@+id/selected_character"
+                android:contentDescription="icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="설명 텍스트"
+                android:textSize="16sp"
+                android:layout_marginStart="8dp" />
+
+        </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

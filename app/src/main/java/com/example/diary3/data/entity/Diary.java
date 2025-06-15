@@ -14,6 +14,7 @@ public class Diary {
     public String title;
     public String text;
     public String emotion;
+    public String feedback;
 
 
     public String getDate() {
