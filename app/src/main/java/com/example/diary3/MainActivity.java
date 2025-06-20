@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        // 스와이프 시 BottomNavigationView도 변경
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {

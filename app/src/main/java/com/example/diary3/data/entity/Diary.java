@@ -10,10 +10,8 @@ public class Diary {
     @PrimaryKey(autoGenerate = false)
     @NonNull
     public String date;
-
     public String title;
     public String text;
-    public String emotion;
     public String feedback;
 
 
@@ -21,10 +19,21 @@ public class Diary {
         return date;
     }
 
-    public Diary(@NonNull String date, String title, String text, String emotion) {
+    public String getTitle() {
+        return title;
+    }
+
+    public String getText() {
+        return text;
+    }
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public Diary(@NonNull String date, String title, String text, String feedback) {
         this.date = date;
         this.title = title;
         this.text = text;
-        this.emotion = emotion;
+        this.feedback = feedback;
     }
 }

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/rootLayout"
     android:padding="16dp">
 
     <!-- 날짜 표시 -->
@@ -14,7 +15,8 @@
     android:textSize="18sp"
     android:textStyle="bold"
     android:padding="8dp"
-    android:background="@android:drawable/edit_text"/>
+    android:background="@android:color/transparent"
+        />
 
 
     <!-- 일기 입력 -->
@@ -25,9 +27,28 @@
         android:layout_weight="1"
         android:hint="내용을 입력하세요"
         android:gravity="top"
-        android:background="@android:drawable/edit_text"
+        android:background="@android:color/transparent"
         android:inputType="textMultiLine"
         android:padding="8dp" />
+
+    <LinearLayout
+        android:id="@+id/image_text_row"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/diary_character"
+            android:contentDescription="icon" />
+        <TextView
+            android:id="@+id/feedbackTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="내용을 입력하세요"
+            android:background="@android:color/transparent"
+            android:padding="8dp" />
+    </LinearLayout>
 
     <!-- 버튼 영역 -->
     <LinearLayout

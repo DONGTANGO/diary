@@ -12,7 +12,7 @@ import com.example.diary3.data.entity.Diary;
 import com.example.diary3.data.entity.UserProfile;
 
 
-@Database(entities = {Diary.class, UserProfile.class}, version = 2)
+@Database(entities = {Diary.class, UserProfile.class}, version = 4)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract DiaryDao diaryDao();

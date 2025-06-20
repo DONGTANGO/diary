@@ -7,13 +7,13 @@ import androidx.room.PrimaryKey;
 public class UserProfile {
 
     @PrimaryKey(autoGenerate = true)
-    public int id = 1; // 기본 1개만 저장하므로 고정 id로 사용
+    public int id = 1;
 
     public String name;
-    public String birthDate;   // 생년월일 yyyy-MM-dd 형식
+    public String birthDate;
     public String gender;
-    public String location;    // 사는 곳
-    public String birthday;    // 생일 (월/일)
+    public String location;
+    public String birthday;
     public String mbti;
     public String closeFriends;
     public String family;

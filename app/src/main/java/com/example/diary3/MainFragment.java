@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -28,12 +29,14 @@ import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
+import org.json.JSONObject;
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class MainFragment extends Fragment {
@@ -48,6 +51,7 @@ public class MainFragment extends Fragment {
 
     private ImageView calendarCharacterImageView;
 
+    private TextView monthlyFeedbackTextView;
 
 
     public MainFragment() {
@@ -62,21 +66,19 @@ public class MainFragment extends Fragment {
 
         materialCalendarView = view.findViewById(R.id.calendarView);
 
-        //캘린더 실행
         materialCalendarView.state().edit()
                 .setCalendarDisplayMode(CalendarMode.MONTHS)
                 .commit();
 
-        //월화수목금 한글화,일요일 빨간색,연도 월 표시 변경
         materialCalendarView.setWeekDayFormatter(new ArrayWeekDayFormatter(getResources().getTextArray(R.array.custom_weekdays)));
         materialCalendarView.setTitleFormatter(new KoreanTitleFormatter());
         materialCalendarView.setHeaderTextAppearance(R.style.CalendarWidgetHeader);
         materialCalendarView.addDecorator(new SundayDecorator());
 
+        monthlyFeedbackTextView = view.findViewById(R.id.monthlyFeedbackTextView); // 레이아웃의 TextView ID
 
         diaryDao = AppDatabase.getInstance(requireContext()).diaryDao();
 
-        // DB에서 일기 날짜 불러와 점 표시
         new LoadDiaryDatesTask().execute();
 
         materialCalendarView.setOnDateChangedListener((widget, date, selected) -> {
@@ -85,13 +87,22 @@ public class MainFragment extends Fragment {
             startActivityForResult(intent, REQUEST_CODE_DIARY_WRITE);
         });
 
+        calendarCharacterImageView = view.findViewById(R.id.selected_character);
+
+        calendarCharacterImageView.setOnClickListener(v -> {
+            CalendarDay currentMonth = materialCalendarView.getCurrentDate();
+            int year = currentMonth.getYear();
+            int month = currentMonth.getMonth(); // 1-based month
+
+            new GetMonthlyFeedbackTask().execute(year, month);
+        });
+
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        calendarCharacterImageView = view.findViewById(R.id.selected_character);
         updateCharacterImage();
     }
 
@@ -101,7 +112,7 @@ public class MainFragment extends Fragment {
             case "character1": return R.drawable.character1;
             case "character2": return R.drawable.character2;
             case "character3": return R.drawable.character3;
-            default: return R.drawable.character1; // 기본 캐릭터 이미지
+            default: return R.drawable.character1;
         }
     }
 
@@ -118,7 +129,6 @@ public class MainFragment extends Fragment {
     }
 
 
-    // 특정 날짜만 점 표시 상태 갱신
     private void updateSingleDate(String dateStr) {
         if (eventDecorator == null) {
             eventDecorator = new EventDecorator(Color.RED, new HashSet<>());
@@ -193,7 +203,78 @@ public class MainFragment extends Fragment {
         int resId = getCharacterResId(selectedCharacter);
         calendarCharacterImageView.setImageResource(resId);
     }
-    // 일요일 빨간색 처리
+
+
+    private class GetMonthlyFeedbackTask extends AsyncTask<Integer, Void, String> {
+        private int currentYear;
+        private int currentMonth;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            monthlyFeedbackTextView.setText("월간 피드백을 생성 중..."); // 로딩 메시지 표시
+        }
+        // ----------------------------------------
+
+
+        @Override
+        protected String doInBackground(Integer... params) {
+            currentYear = params[0];
+            currentMonth = params[1]; // 1-based month
+
+            LocalDate startDate = LocalDate.of(currentYear, currentMonth, 1);
+            LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+
+
+            List<Diary> allDiaries = diaryDao.getAllDiaries();
+
+            List<String> feedbacks = allDiaries.stream()
+                    .filter(diary -> {
+                        try {
+                            LocalDate diaryDate = LocalDate.parse(diary.getDate());
+                            return diaryDate.getYear() == currentYear && diaryDate.getMonthValue() == currentMonth;
+                        } catch (Exception e) {
+                            Log.e("GetMonthlyFeedbackTask", "날짜 파싱 오류: " + diary.getDate());
+                            return false;
+                        }
+                    })
+                    .map(Diary::getFeedback) // Diary 엔티티에 getFeedback() 메서드가 있어야 합니다.
+                    .filter(feedback -> feedback != null && !feedback.isEmpty()) // null 또는 빈 문자열 피드백 제외
+                    .collect(Collectors.toList());
+
+            if (feedbacks.isEmpty()) {
+                return "이번 달에는 피드백을 분석할 일기가 없습니다.";
+            }
+
+            String combinedFeedbacks = String.join("\n", feedbacks);
+            Log.d("MonthlyFeedback", "Combined Feedbacks: " + combinedFeedbacks);
+
+            try {
+                JSONObject requestJson = new JSONObject();
+                requestJson.put("combined_text", combinedFeedbacks); // AI 요청에 맞는 키 사용
+
+                requestJson.put("year_month", String.format("%04d-%02d", currentYear, currentMonth));
+
+                JSONObject apiResult = EmotionRequestHelper.callSyncMonthlySummaryApi(requestJson);
+
+                if (apiResult != null && apiResult.has("monthly_summary")) { // AI 응답에 맞는 키 사용
+                    return apiResult.getString("monthly_summary");
+                } else {
+                    return "월간 피드백을 가져오지 못했습니다. (API 응답 오류)";
+                }
+            } catch (Exception e) {
+                Log.e("GetMonthlyFeedbackTask", "월간 피드백 API 호출 실패: " + e.getMessage());
+                return "월간 피드백 생성 중 오류가 발생했습니다: " + e.getLocalizedMessage();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            monthlyFeedbackTextView.setText(result); // 결과를 TextView에 표시
+        }
+    }
+
     private static class SundayDecorator implements DayViewDecorator {
         @Override
         public boolean shouldDecorate(CalendarDay day) {

@@ -27,4 +27,11 @@ public interface DiaryDao {
 
     @Query("DELETE FROM diary WHERE date = :date")
     void deleteByDate(String date);
+
+    @Query("UPDATE diary SET feedback = :feedback WHERE date = :date")
+    void updateFeedback(String date, String feedback);
+
+
+    @Query("SELECT feedback FROM diary WHERE substr(date, 1, 7) = :yearMonthString AND feedback IS NOT NULL AND feedback != ''")
+    List<String> getFeedbacksByYearMonth(String yearMonthString);
 }
